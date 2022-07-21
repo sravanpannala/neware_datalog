@@ -2,6 +2,8 @@
 
 from PySide6.QtWidgets import *
 
+from PySide6 import QtCore
+
 import sys
 import csv
 import time
@@ -36,14 +38,13 @@ class MainWindow(QMainWindow):
         self.b2.clicked.connect(self.b2_state)
         self.b2.setEnabled(False)
 
-        self.combobox = QComboBox()
+        self.combobox = QListWidget()
         # self.combobox.addItems(['411','412','413','414','415','416','417','418'])
         my_value = 411
         self.combobox.addItems([str(x) for x in range(my_value,my_value+8)])
-        self.combobox.insertSeparator(8)
         my_value = 421
         self.combobox.addItems([str(x) for x in range(my_value,my_value+8)])
-        self.combobox.activated.connect(self.activated)
+        self.combobox.currentRowChanged.connect(self.activated)
         self.combobox.currentTextChanged.connect(self.text_changed)
         # self.combobox.currentIndexChanged.connect(self.index_changed)
 
@@ -86,6 +87,7 @@ class MainWindow(QMainWindow):
             headerwriter.writerow(Headerlist)
             headerwriter.writerow(SubHeader)
         self.l2.setText("Running")
+        self.combobox.item(self.idx).setBackground(QtCore.Qt.green)
         self.b1.setEnabled(False)
         self.b2.setEnabled(True)
         self.input.setText(self.BattCelldata[self.idx]['Filename'])
@@ -101,6 +103,7 @@ class MainWindow(QMainWindow):
         self.BattCelldata[self.idx]['LogStatus']= 0
         print('Log Status: ',self.BattCelldata[self.idx]['LogStatus'])
         self.l2.setText("Stopped")
+        self.combobox.item(self.idx).setBackground(QtCore.Qt.white)
         self.b2.setEnabled(False)
         self.b1.setEnabled(True)
         self.input.setText("proj_cell_xxx_test_xxx.csv")
@@ -112,11 +115,13 @@ class MainWindow(QMainWindow):
         print('Log Status: ',self.BattCelldata[self.idx]['LogStatus'])
         if self.BattCelldata[self.idx]['LogStatus']:
             self.l2.setText("Running")
+            self.combobox.item(self.idx).setBackground(QtCore.Qt.green)
             self.b1.setEnabled(False)
             self.b2.setEnabled(True)
             self.input.setText(self.BattCelldata[self.idx]['Filename'])
         else:
             self.l2.setText("Stopped")
+            self.combobox.item(self.idx).setBackground(QtCore.Qt.white)
             self.b2.setEnabled(False)
             self.b1.setEnabled(True)
             self.input.setText("proj_cell_xxx_test_xxx.csv")

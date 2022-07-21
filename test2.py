@@ -1,3 +1,6 @@
+# Qt Code with Threading for while loop
+# Not working properly
+
 from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QVBoxLayout, QWidget, QGridLayout
 from PySide6.QtWidgets import QPushButton
 

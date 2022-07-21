@@ -1,3 +1,5 @@
+# Qt code with qasync 
+
 from PySide6.QtWidgets import *
 
 import sys

@@ -77,9 +77,9 @@ class MainWindow(QMainWindow):
         self.l2.setText("Running")
         self.b1.setEnabled(False)
         self.b2.setEnabled(True)
-        self.idx=0
         f_name = self.input.text()
         print(f_name)
+        self.idx=0
         self.start_log()
     
     @asyncSlot()
@@ -87,6 +87,7 @@ class MainWindow(QMainWindow):
         self.l2.setText("Stopped")
         self.b2.setEnabled(False)
         self.b1.setEnabled(True)
+        self.idx=0
         self.stop_log()
     
 async def main():    

@@ -11,9 +11,14 @@ import qasync
 
 from qasync import asyncSlot, asyncClose, QApplication
 
+
 class MainWindow(QMainWindow):
+
+
     def __init__(self):
         super().__init__()
+        self.N_channels=2
+        self.BattCelldata = [{'Datapoint Number':0,'Test Time':0,'Current':0,'Potential':0,'Timestamp':0,'LDC SENSOR':0,'LDC REF':0,'Ambient Temperature':0,'Ambient RH':0,'LDC N':0,'LDC STD':0,'REF N':0,'REF STD':0,'LDC scaled':0,'LDC status':0,'REF status':0,'Filename':0,'Start_Time':0,'New_data':0,'LogStatus':0} for i in range(self.N_channels)]
 
         self.setWindowTitle("Neware Data Logger")
         self.input = QLineEdit()
@@ -42,14 +47,18 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(container)
 
     
-    # def start_log(self):
-    #     self.f=open(self.input.text(),"a", newline='')
-    #     self.writer = csv.writer(self.f,delimiter=",")
-    #     self.writer.writerow(['col1,col2']) 
-    #     self.f.flush()
-    #     self.stop_event=threading.Event()
-    #     self.c_thread=threading.Thread(target=self.log_data)
-    #     self.c_thread.start()
+    def start_log(self):
+        Headerlist=['Datapoint Number','Test Time','Current','Potential','Timestamp','LDC SENSOR','LDC REF','Ambient Temperature','Ambient RH','LDC N','LDC STD','REF N','REF STD','LDC scaled','LDC status','REF status']
+        SubHeader=['none','second','amp','volt','epoch','none','none','celsius','percent','none','none','none','none','none']
+        timestr = time.strftime("%Y%m%d_%H%M%S")
+        self.BattCelldata[self.idx]['Filename']= 'proj_cell_xxx_test_xxx_'+timestr +'.csv'
+        self.BattCelldata[self.idx]['LogStatus']= 1
+        print(self.BattCelldata[self.idx]['LogStatus'])
+        with open(self.BattCelldata[self.idx]['Filename'], 'w',newline='') as file:
+            headerwriter=csv.writer(file,delimiter='\t')
+            headerwriter.writerow(Headerlist)
+            headerwriter.writerow(SubHeader)
+      
     
     # def log_data(self):
     #     state=True
@@ -57,25 +66,26 @@ class MainWindow(QMainWindow):
     #         self.writer.writerow([0,1])
     #         time.sleep(5)
 
-    # def stop_log(self):
-    #     self.stop_event.set()
-    #     self.f.close()
+    def stop_log(self):
+        self.BattCelldata[self.idx]['LogStatus']= 0
+        print(self.BattCelldata[self.idx]['LogStatus'])
 
     @asyncSlot()
     async def b1_state(self):
         self.l2.setText("Running")
         self.b1.setEnabled(False)
         self.b2.setEnabled(True)
+        self.idx=0
         f_name = self.input.text()
         print(f_name)
-        # self.start_log()
+        self.start_log()
     
     @asyncSlot()
     async def b2_state(self):
         self.l2.setText("Stopped")
         self.b2.setEnabled(False)
         self.b1.setEnabled(True)
-        # self.stop_log()
+        self.stop_log()
     
 async def main():    
 

@@ -1,5 +1,5 @@
-from PySide2.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QVBoxLayout, QWidget, QGridLayout
-from PySide2.QtWidgets import QPushButton
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QVBoxLayout, QWidget, QGridLayout
+from PySide6.QtWidgets import QPushButton
 
 import sys
 import csv

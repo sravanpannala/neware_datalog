@@ -40,12 +40,12 @@ class MainWindow(QMainWindow):
         self.writer.writerow(['col1,col2']) 
         self.f.flush()
         self.stop_event=threading.Event()
-        self.c_thread=threading.Thread(target=self.log_data, args=(self.stop_event,))
+        self.c_thread=threading.Thread(target=self.log_data)
         self.c_thread.start()
     
-    def log_data(self,stop_event):
+    def log_data(self):
         state=True
-        while state and not stop_event.isSet():
+        while state and not self.stop_event.wait(1):
             self.writer.writerow([0,1])
             time.sleep(5)
 

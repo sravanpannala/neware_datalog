@@ -19,7 +19,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.N_channels=8
+        self.N_channels=16
         self.BattCelldata = [{'Datapoint Number':0,'Test Time':0,'Current':0,'Potential':0,'Timestamp':0,'LDC SENSOR':0,'LDC REF':0,'Ambient Temperature':0,'Ambient RH':0,'LDC N':0,'LDC STD':0,'REF N':0,'REF STD':0,'LDC scaled':0,'LDC status':0,'REF status':0,'Filename':0,'Start_Time':0,'New_data':0,'LogStatus':0} for i in range(self.N_channels)]
 
         self.setWindowTitle("Neware Data Logger")
@@ -37,7 +37,12 @@ class MainWindow(QMainWindow):
         self.b2.setEnabled(False)
 
         self.combobox = QComboBox()
-        self.combobox.addItems(['411','412','413','414','415','416','417','418'])
+        # self.combobox.addItems(['411','412','413','414','415','416','417','418'])
+        my_value = 411
+        self.combobox.addItems([str(x) for x in range(my_value,my_value+8)])
+        self.combobox.insertSeparator(8)
+        my_value = 421
+        self.combobox.addItems([str(x) for x in range(my_value,my_value+8)])
         self.combobox.activated.connect(self.activated)
         self.combobox.currentTextChanged.connect(self.text_changed)
         # self.combobox.currentIndexChanged.connect(self.index_changed)
